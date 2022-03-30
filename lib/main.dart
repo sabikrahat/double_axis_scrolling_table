@@ -37,8 +37,10 @@ class _HomePageState extends State<HomePage> {
           Text("Header ${index + 1}", style: const TextStyle(fontSize: 17.0)));
 
   @override
-  Widget build(BuildContext context) =>
-      DoubleScrollingTable(headerWidgets: headers);
+  Widget build(BuildContext context) => DoubleScrollingTable(
+        headerWidgets: headers,
+        length: 20,
+      );
 }
 
 class DoubleScrollingTable extends StatelessWidget {
@@ -47,11 +49,15 @@ class DoubleScrollingTable extends StatelessWidget {
     this.height = 60.0,
     this.width = 120.0,
     required this.headerWidgets,
+    required this.length,
+    this.headerBackgroundColor = Colors.grey,
   }) : super(key: key);
 
   final double height;
   final double width;
   final List<Widget> headerWidgets;
+  final int length;
+  final Color headerBackgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +72,11 @@ class DoubleScrollingTable extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ColumnFixedTable(
-                          height: height,
-                          width: width,
-                          headerWidgets: headerWidgets)))),
+                            height: height,
+                            width: width,
+                            headerWidgets: headerWidgets,
+                            length: length,
+                          )))),
           const SizedBox(height: 20.0),
           ElevatedButton(
               child: const Text('Row Fixed Table'),
@@ -79,6 +87,7 @@ class DoubleScrollingTable extends StatelessWidget {
                             height: height,
                             width: width,
                             headerWidgets: headerWidgets,
+                            length: length,
                           )))),
         ])));
   }

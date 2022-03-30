@@ -6,50 +6,41 @@ class RowFixedTable extends StatelessWidget {
     this.height = 60.0,
     this.width = 120.0,
     required this.headerWidgets,
+    required this.length,
+    this.headerBackgroundColor = Colors.grey,
   }) : super(key: key);
 
   final double height;
   final double width;
   final List<Widget> headerWidgets;
+  final int length;
+  final Color headerBackgroundColor;
 
-  List<Widget> _buildHeaders() {
-    return List.generate(
+  List<Widget> _buildHeaders() => List.generate(
       headerWidgets.length,
       (index) => Container(
           alignment: Alignment.center,
           height: height,
           width: width,
           decoration: BoxDecoration(
-              color: Colors.grey[400],
+              color: headerBackgroundColor,
               border: Border.all(color: Colors.black, width: 0.8)),
-          child: headerWidgets[index]),
-    );
-  }
+          child: headerWidgets[index]));
 
-  List<Widget> _buildCells(int count) {
-    return List.generate(
-      count,
-      (index) => Container(
-        alignment: Alignment.center,
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Colors.black, width: 0.8)),
-        child:
-            Text("Data ${index + 1}", style: const TextStyle(fontSize: 17.0)),
-      ),
-    );
-  }
-
-  List<Widget> _buildRows(int count) {
-    return List.generate(
-      count,
-      (index) => Row(
-        children: _buildCells(20),
-      ),
-    );
-  }
+  List<Widget> _buildData() => List.generate(
+      length,
+      (outterIndex) => Row(
+          children: List.generate(
+              headerWidgets.length,
+              (innerIndex) => Container(
+                  alignment: Alignment.center,
+                  width: width,
+                  height: height,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black, width: 0.8)),
+                  child: Text("${outterIndex + 1}] Data [${innerIndex + 1}",
+                      style: const TextStyle(fontSize: 17.0))))));
 
   @override
   Widget build(BuildContext context) {
@@ -71,27 +62,14 @@ class RowFixedTable extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: _buildRows(20),
+                  children: _buildData(),
                 ),
               ),
             ),
-            // Flexible(
-            //   child: ListView.builder(
-            //     shrinkWrap: true,
-            //     scrollDirection: Axis.vertical,
-            //     itemBuilder: (context, index) => Row(
-            //       children: List.generate(
-            //         headerWidgets.length,
-            //         (index) => Row(
-            //           children: _buildCells(20),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),
     );
   }
 }
+
